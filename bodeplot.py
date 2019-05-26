@@ -8,8 +8,11 @@ from pade import pade
 
 
 class BodePlot:
-    """
-    
+    """ Main bode construct
+    param: numerator -> list of coefficients for numerator terms (descending power order) [optional]
+           denominator -> list of coefficients for denominator terms (descending power order) [optional]
+           time_delay -> as in exp(-as), where a == time delay factor [optional]
+           **kwargs -> dict of optional parameters supplied to pade function // TODO: extras for plot function
     """
 
     def __init__(self, numerator=[1], denominator=[1], time_delay=None, **kwargs):
@@ -24,16 +27,6 @@ class BodePlot:
     @lru_cache(maxsize=2)
     def bodefy(self):
         """ Create Bode parameters from Transfer Function
-
-        If num is omitted while den is provided, it is assumed that the numerator is 1.
-            |_ ! den needs to be passed as a keyword argument in this case !
-        If den is omitted, it is assumed to be 1 (same as having no denominators)
-            |_ ! No need to pass num as a keyword argument in this case !
-
-        param: num: numerator of transfer function
-               den: denominator of transfer function
-               td: time delay amount
-               **kwargs = [,n: order of Padé's terms]
 
         return: A tuple containing the frequency, magnitude, and phase of the the given 
                 transfer function -> (w, mag, phase)
@@ -55,15 +48,6 @@ class BodePlot:
 
     def add_timedelay(self):
         """ Add a time delay function to a given transfer function
-
-        Due to the lack of a proper time delay implementation in `scipy.signal`, this function uses
-        the Padé's Approximation of a specified order (slightly modified form of the `pade` function from
-        `control.delay`)
-
-        param: tf_num, tf_den: respective numerator and denominator of transfer function only
-               td: time delay parameter -> 'a' in exp(-as)
-               **kwargs: supply additional information to `pade` function -> n: order of Padé terms used
-                   |_ ! (optional) -> if not specified, n=1 is used !
 
         return: tuple containing numerators and denominators of the combined transfer function
         """
