@@ -28,7 +28,7 @@ class BodePlot:
     def bodefy(self):
         """ Create Bode parameters from Transfer Function
 
-        return: A tuple containing the frequency, magnitude, and phase of the the given 
+        return: A tuple containing the frequency, magnitude, and phase of the given 
                 transfer function -> (w, mag, phase)
         """
 
@@ -44,8 +44,8 @@ class BodePlot:
         print('\n', self.sys)
         return signal.bode(self.sys, freq_range)
 
-    lru_cache(maxsize=2)
-
+    
+    @lru_cache(maxsize=2)
     def add_timedelay(self):
         """ Add a time delay function to a given transfer function
 
